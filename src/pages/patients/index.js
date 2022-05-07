@@ -16,11 +16,11 @@ export const PatientsPage = () => {
     const [showAddPatientModal, setShowAddPatientModal] = useState(false);
     const [newPatient, setNewPatient] = useState(newPatientInitialState);
 
-    const handleOpenAddPatientModal = () => {
+    const openAddPatientModal = () => {
         setShowAddPatientModal(true);
     };
 
-    const onCloseAddPatientClick = () => {
+    const closeAddPatientModal = () => {
         setShowAddPatientModal(false);
     }
 
@@ -41,7 +41,7 @@ export const PatientsPage = () => {
     const onAddPatientClick = () => {
         setPatients(patients.concat([newPatient]));
         setNewPatient(newPatientInitialState);
-        onCloseAddPatientClick();
+        closeAddPatientModal();
     }
 
     return (
@@ -54,7 +54,7 @@ export const PatientsPage = () => {
                         <li>{patient.name} {patient.lastName}</li>
                     ))}
                 </ul>
-                <Dialog open={showAddPatientModal} onClose={onCloseAddPatientClick}>
+                <Dialog open={showAddPatientModal} onClose={closeAddPatientModal}>
                     <DialogTitle>Agregar paciente</DialogTitle>
                     <DialogContent>
                         <TextField
@@ -89,11 +89,11 @@ export const PatientsPage = () => {
                                 onChange={onFormChange} /> }
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={onCloseAddPatientClick}>Cancel</Button>
+                        <Button onClick={closeAddPatientModal}>Cancel</Button>
                         <Button onClick={onAddPatientClick}>Agregar</Button>
                     </DialogActions>
                 </Dialog>
-                <Button onClick={handleOpenAddPatientModal}>Agregar</Button>
+                <Button onClick={openAddPatientModal}>Agregar</Button>
             </main>
         </div>
     )
