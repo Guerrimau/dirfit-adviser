@@ -105,7 +105,7 @@ export const PatientsPage = () => {
                         </Table>
                     </TableContainer>
                     : <Stack justifyContent="center" direction="row" sx={{ marginTop: "20px" }}>
-                        <Typography color="grey">Aun no se han registrado pacientes</Typography>
+                        <Typography color="grey">Aún no se han registrado pacientes.</Typography>
                     </Stack>
                 }
 
