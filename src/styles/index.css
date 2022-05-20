@@ -1,4 +1,10 @@
+:root {
+    --primary-color: #A541F7;
+}
+
 body {
     font-family: 'IBM Plex Sans Arabic', sans-serif;
     margin: 0;
 }
+
+
