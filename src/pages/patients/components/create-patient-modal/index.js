@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, IconButton, Stack, TextField, Typography } from "@mui/material";
+import { api } from '../../../../service/api';
+import { formatCreatePatient } from '../../../../service/api/formatters/patients/create-patient';
 
 const newPatientInitialState = {
-    name: "",
+    firstName: "",
     lastName: "",
     age: 0,
     dietBefore: false,
@@ -23,22 +25,16 @@ export const CreatePatientModal = ({
         }));
     }
 
-    const onDietBeforeClick = (e) => {
-        setNewPatient(prevState => ({
-            ...prevState,
-            dietBefore: e.target.checked
-        }));
-    }
-
-    const onAddPatientClick = () => {
-        const newPatientObject = {
-            ...newPatient,
-            id: Date.now()
+    const onAddPatientClick = async () => {
+        try {
+            const res = await api.patient.create(newPatient);
+            const formatedNewPatient = formatCreatePatient(res.data);
+            addPatient(formatedNewPatient);
+            closeAddPatientModal();
+            setNewPatient(newPatientInitialState);
+        } catch (error) {
+           console.error(error) 
         }
-        //const res = await API.POST('/Create/Patient', newPatientObject);
-        addPatient(newPatientObject);
-        closeAddPatientModal();
-        setNewPatient(newPatientInitialState);
     }
 
     return (
@@ -46,7 +42,7 @@ export const CreatePatientModal = ({
             <DialogTitle>Agregar paciente</DialogTitle>
             <DialogContent>
                 <TextField
-                    id="name"
+                    id="firstName"
                     label="Nombre"
                     type="text"
                     fullWidth
@@ -60,21 +56,19 @@ export const CreatePatientModal = ({
                     variant="standard"
                     onChange={onFormChange} />
                 <TextField
+                    id="email"
+                    label="Correo"
+                    type="text"
+                    fullWidth
+                    variant="standard"
+                    onChange={onFormChange} />
+                <TextField
                     id="age"
                     label="Edad"
                     type="number"
                     fullWidth
                     variant="standard"
                     onChange={onFormChange} />
-                <FormControlLabel checked={newPatient?.dietBefore} onChange={onDietBeforeClick} control={<Checkbox />} label="¿Llevó dieta anteriormente?" />
-                {newPatient.dietBefore &&
-                    <TextField
-                        id="amountOfPrevDiets"
-                        label="Cantidad de veces"
-                        type="number"
-                        fullWidth
-                        variant="standard"
-                        onChange={onFormChange} />}
             </DialogContent>
             <DialogActions>
                 <Button onClick={closeAddPatientModal}>Cancel</Button>

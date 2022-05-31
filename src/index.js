@@ -2,6 +2,7 @@ import { ThemeProvider } from '@mui/material';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { AuthContextProvider } from './context/auth-context';
 import { DashboardPage } from './pages/dashboard';
 import { LoginPage } from './pages/login';
 import { PatientsPage } from './pages/patients';
@@ -12,15 +13,17 @@ import { theme } from './styles/themes';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <Routes>
-          <Route index element={<LoginPage />} />
-          <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/patients" element={<PatientsPage />} />
-        </Routes>
-      </BrowserRouter>
-    </ThemeProvider>
+    <AuthContextProvider>
+      <ThemeProvider theme={theme}>
+        <BrowserRouter>
+          <Routes>
+            <Route index element={<LoginPage />} />
+            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/patients" element={<PatientsPage />} />
+          </Routes>
+        </BrowserRouter>
+      </ThemeProvider>
+    </AuthContextProvider>
   </React.StrictMode>
 );
 

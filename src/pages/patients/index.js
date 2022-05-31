@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, IconButton, Stack, Typography } from "@mui/material";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -15,6 +15,8 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { Sidebar } from "../../components/sidebar";
 import { CreatePatientModal } from "./components/create-patient-modal";
 import { UpdatePatientModal } from "./components/update-patient-modal";
+import { api } from "../../service/api";
+import { formatGetManyPatients } from "../../service/api/formatters/patients/get-many-patients";
 
 const updatePatientModalInitialState = {
     show: false,
@@ -61,10 +63,23 @@ export const PatientsPage = () => {
     };
 
     const onDeletePatientClick = async (deletedId) => {
-        //const res = await API.POST('/Delete/Patient', { patientId });
-        const newPatientList = patients.filter(patient => patient.id !== deletedId);
-        setPatients(newPatientList);
+        try {
+            await api.patient.delete(deletedId);
+            const newPatientList = patients.filter(patient => patient.id !== deletedId);
+            setPatients(newPatientList);
+        } catch (error) {
+            console.error(error)
+        }
     }
+
+    useEffect(() => {
+        const getData = async () => {
+            const res = await api.patient.getMany()
+            const formatedData = formatGetManyPatients(res.data);
+            setPatients(formatedData);
+        }
+        getData();
+    }, []);
 
     return (
         <div style={{ height: "100vh", display: "grid", gridTemplateColumns: "250px calc(100vw - 250px)" }}>
@@ -88,7 +103,7 @@ export const PatientsPage = () => {
                                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                     >
                                         <TableCell component="th" scope="row">
-                                            {patient.name + " " + patient.lastName}
+                                            {patient.firstName + " " + patient.lastName}
                                         </TableCell>
                                         <TableCell align="right">{patient.age}</TableCell>
                                         <TableCell align="right">

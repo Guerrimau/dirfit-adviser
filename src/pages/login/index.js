@@ -1,13 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Avatar, CssBaseline, Container, Box, Typography, TextField, Button } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
+import { api } from "../../service/api";
+import { AuthContext } from "../../context/auth-context";
+
 export const LoginPage = () => {
+  const { setUser } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const isValidEmail =  validateEmail(data.get("email"));
@@ -15,7 +19,13 @@ export const LoginPage = () => {
 
     if(isValidEmail) {
       if(isValidPassword) {
-        navigate("/dashboard");
+        try {
+          const res = await api.auth.login(data.get("email"), data.get("password"));
+          setUser(res.data);
+          navigate("/dashboard");
+        } catch (e) {
+          console.error(e);
+        }
       } else {
         console.error("Contraseña invalido");
       }

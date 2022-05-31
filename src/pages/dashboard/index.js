@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Sidebar } from "../../components/sidebar";
+import { AuthContext } from "../../context/auth-context";
 import "../../styles/dashboard/index.css";
 
 export const DashboardPage = () => {
+
     return (
         <div style={{ height: "100vh", display: "grid", gridTemplateColumns: "250px calc(100vw - 250px)" }}>
             <Sidebar />
