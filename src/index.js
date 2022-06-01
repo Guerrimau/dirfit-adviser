@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AuthContextProvider } from './context/auth-context';
 import { DashboardPage } from './pages/dashboard';
 import { LoginPage } from './pages/login';
+import { MealsPage } from './pages/meals';
 import { PatientsPage } from './pages/patients';
 import reportWebVitals from './reportWebVitals';
 import "./styles/index.css";
@@ -20,6 +21,7 @@ root.render(
             <Route index element={<LoginPage />} />
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/patients" element={<PatientsPage />} />
+            <Route path="/meals" element={<MealsPage />} />
           </Routes>
         </BrowserRouter>
       </ThemeProvider>
