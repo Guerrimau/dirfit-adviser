@@ -29,6 +29,22 @@ const deletePatient = (patientId) => {
     return axios.delete(`${apiUrl}/patients/${patientId}`, apiConfig);
 }
 
+const createMeal = (data) => {
+    return axios.post(`${apiUrl}/meals`, { data }, apiConfig);
+}
+
+const updateMeal = (data, mealId) => {
+    return axios.put(`${apiUrl}/meals/${mealId}`, { data }, apiConfig);
+}
+
+const getManyMeals = () => {
+    return axios.get(`${apiUrl}/meals`, apiConfig);
+}
+
+const deleteMeal = (mealId) => {
+    return axios.delete(`${apiUrl}/meals/${mealId}`, apiConfig)
+}
+
 export const api = {
     auth: {
         login
@@ -38,5 +54,11 @@ export const api = {
         update: updatePatient,
         delete: deletePatient,
         getMany: getManyPatients,
+    },
+    meals: {
+        create: createMeal,
+        update: updateMeal,
+        delete: deleteMeal,
+        getMany: getManyMeals,
     }
 }

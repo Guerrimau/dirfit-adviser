@@ -7,6 +7,7 @@ import { DashboardPage } from './pages/dashboard';
 import { LoginPage } from './pages/login';
 import { MealsPage } from './pages/meals';
 import { PatientsPage } from './pages/patients';
+import { PatientDietPage } from './pages/patients/patient-diet';
 import reportWebVitals from './reportWebVitals';
 import "./styles/index.css";
 import { theme } from './styles/themes';
@@ -21,6 +22,7 @@ root.render(
             <Route index element={<LoginPage />} />
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/patients" element={<PatientsPage />} />
+            <Route path="/patients/:patientId/diet" element={<PatientDietPage />} />
             <Route path="/meals" element={<MealsPage />} />
           </Routes>
         </BrowserRouter>

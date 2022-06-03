@@ -8,8 +8,6 @@ export const Sidebar = () => {
             <Link to="/dashboard">Inicio</Link>
             <Link to="/patients">Pacientes</Link>
             <Link to="/meals">Comidas</Link>
-            <h3>Dieta</h3>
-            <h3>Estadisticas</h3>
             <Link to="/">Salir</Link>
         </section>
     )

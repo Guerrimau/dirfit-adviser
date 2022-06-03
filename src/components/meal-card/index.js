@@ -11,9 +11,9 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import "../../styles/components/meal-card/styles.css";
 
-export const MealCard = () => {
+export const MealCard = ({ mealData, showActions = true, onUpdate, onDelete }) => {
     return (
-        <Card>
+        <Card sx={{ width: "300px" }}>
             <CardMedia
                 component="img"
                 height="140"
@@ -22,16 +22,18 @@ export const MealCard = () => {
             />
             <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
-                    Chow Mein
+                    {mealData?.name}
                 </Typography>
                 <Typography variant="body2" color="text.secondary" className="meal-card__ingredients">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tempus consequat justo egestas molestie. Praesent egestas dictum tellus vel venenatis. Nullam finibus eros eros, mattis lacinia metus condimentum quis. In id euismod nunc. Pellentesque euismod posuere est non interdum. Cras feugiat viverra lectus, vitae fermentum leo mollis vel. 
+                   {mealData?.ingredients}
                 </Typography>
             </CardContent>
-            <CardActions>
-                <IconButton><EditIcon /></IconButton>
-                <IconButton><DeleteIcon /></IconButton>
-            </CardActions>
+            {showActions &&
+                <CardActions>
+                    <IconButton onClick={onUpdate}><EditIcon /></IconButton>
+                    <IconButton onClick={onDelete}><DeleteIcon /></IconButton>
+                </CardActions>
+            }
         </Card>
     )
 }

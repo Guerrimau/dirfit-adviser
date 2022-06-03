@@ -1,38 +1,41 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react'
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField } from '@mui/material'
 import { api } from '../../../../service/api';
-import { formatCreatePatient } from '../../../../service/api/formatters/patients/create-patient';
 
-export const CreateMealModal = ({
+
+export const UpdateMealModal = ({
     show = false,
-    closeModal = () => { },
-    addMeal = () => { },
+    mealData,
+    closeModal = () => {},
+    updateMeal = () => {}
 }) => {
-
-    const [newMeal, setNewMeal] = useState({});
+    const [meal, setMeal] = useState({});
 
     const onFormChange = (e) => {
-        setNewMeal(prevState => ({
+        setMeal(prevState => ({
             ...prevState,
             [e.target.id]: e.target.value
         }));
     }
 
-    const onAddMealClick = async () => {
+    const onSaveMealClick = async () => {
         try {
-            const res = await api.meals.create(newMeal);
-            const formatedNewMeal = formatCreatePatient(res.data);
-            addMeal(formatedNewMeal);
-            closeModal();
-            setNewMeal({});
+            const data = { ...meal };
+            delete data.id;
+            await api.meals.update(data, meal.id);
+            updateMeal(meal);
         } catch (error) {
-           console.error(error) 
+            console.error(error);
         }
     }
 
+    useEffect(() => {
+        setMeal(mealData);
+    }, [mealData])
+
     return (
         <Dialog open={show} onClose={closeModal}>
-            <DialogTitle>Agregar comida</DialogTitle>
+            <DialogTitle>Actualizar comida</DialogTitle>
             <DialogContent>
                 <TextField
                     id="name"
@@ -40,6 +43,7 @@ export const CreateMealModal = ({
                     type="text"
                     fullWidth
                     variant="standard"
+                    value={meal?.name}
                     onChange={onFormChange} />
                 <TextField
                     id="ingredients"
@@ -49,6 +53,7 @@ export const CreateMealModal = ({
                     multiline
                     minRows={4}
                     variant="standard"
+                    value={meal?.ingredients}
                     onChange={onFormChange} />
                 <Stack direction="row" spacing={2}>
                     <TextField
@@ -56,24 +61,27 @@ export const CreateMealModal = ({
                         label="Proteinas"
                         type="number"
                         variant="standard"
+                        value={meal?.proteins}
                         onChange={onFormChange} />
                     <TextField
                         id="carbs"
                         label="Carbohidratos"
                         type="number"
                         variant="standard"
+                        value={meal?.carbs}
                         onChange={onFormChange} />
                     <TextField
                         id="fats"
                         label="Grasas"
                         type="number"
                         variant="standard"
+                        value={meal?.fats}
                         onChange={onFormChange} />
                 </Stack>
             </DialogContent>
             <DialogActions>
                 <Button onClick={closeModal}>Cancelar</Button>
-                <Button onClick={onAddMealClick}>Agregar</Button>
+                <Button onClick={onSaveMealClick}>Agregar</Button>
             </DialogActions>
         </Dialog>
     )

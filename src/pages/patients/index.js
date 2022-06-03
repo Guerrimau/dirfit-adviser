@@ -11,12 +11,14 @@ import Paper from '@mui/material/Paper';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import RestaurantIcon from '@mui/icons-material/Restaurant';
 
 import { Sidebar } from "../../components/sidebar";
 import { CreatePatientModal } from "./components/create-patient-modal";
 import { UpdatePatientModal } from "./components/update-patient-modal";
 import { api } from "../../service/api";
 import { formatGetManyPatients } from "../../service/api/formatters/patients/get-many-patients";
+import { useNavigate } from "react-router-dom";
 
 const updatePatientModalInitialState = {
     show: false,
@@ -27,6 +29,8 @@ export const PatientsPage = () => {
     const [patients, setPatients] = useState([]);
     const [showAddPatientModal, setShowAddPatientModal] = useState(false);
     const [updatePatientModal, setUpdatePatientModal] = useState(updatePatientModalInitialState);
+
+    const navigate = useNavigate();
 
     const openUpdatePatientModal = (patient) => {
         setUpdatePatientModal({
@@ -62,6 +66,10 @@ export const PatientsPage = () => {
         setPatients(newPatientList);
     };
 
+    const onPlanClick = (patientId) => {
+       navigate(`/patients/${patientId}/diet`)
+    }
+
     const onDeletePatientClick = async (deletedId) => {
         try {
             await api.patient.delete(deletedId);
@@ -92,7 +100,7 @@ export const PatientsPage = () => {
                             <TableHead>
                                 <TableRow>
                                     <TableCell>Nombre</TableCell>
-                                    <TableCell align="right">Edad</TableCell>
+                                    <TableCell>Edad</TableCell>
                                     <TableCell align="right">Acciones</TableCell>
                                 </TableRow>
                             </TableHead>
@@ -105,8 +113,12 @@ export const PatientsPage = () => {
                                         <TableCell component="th" scope="row">
                                             {patient.firstName + " " + patient.lastName}
                                         </TableCell>
-                                        <TableCell align="right">{patient.age}</TableCell>
+                                        <TableCell>{patient.age}</TableCell>
                                         <TableCell align="right">
+                                            <Button
+                                                variant="outlined"
+                                                startIcon={<RestaurantIcon />}
+                                                onClick={() => onPlanClick(patient.id)}>Plan Alimenticio</Button>
                                             <IconButton onClick={() => openUpdatePatientModal(patient)}>
                                                 <EditIcon />
                                             </IconButton>
